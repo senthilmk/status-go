@@ -2,8 +2,9 @@ package api
 
 import (
 	"context"
+	"fmt"
 
-	"github.com/NaySoftware/go-fcm"
+	fcm "github.com/NaySoftware/go-fcm"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	gethcommon "github.com/ethereum/go-ethereum/common"
 	"github.com/status-im/status-go/geth/common"
@@ -231,11 +232,11 @@ func (api *StatusAPI) Notify(token string) string {
 
 // NotifyUsers send notifications to users.
 func (api *StatusAPI) NotifyUsers(message string, payload fcm.NotificationPayload, tokens ...string) error {
-	log.Debug("Notify", "tokens", tokens)
+	log.Warn(fmt.Sprintf("NotifyUsers message=%v, payload.Title=%v payload.Body=%v tokens=%v", message, payload.Title, payload.Body, tokens))
 
 	err := api.b.newNotification().Send(message, payload, tokens...)
 	if err != nil {
-		log.Error("Notify failed:", err)
+		log.Error("NotifyUsers failed:", err)
 	}
 
 	return err
