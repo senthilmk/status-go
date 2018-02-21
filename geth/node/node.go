@@ -21,7 +21,6 @@ import (
 	"github.com/ethereum/go-ethereum/whisper/mailserver"
 	whisper "github.com/ethereum/go-ethereum/whisper/whisperv5"
 	"github.com/status-im/status-go/geth/log"
-	"github.com/status-im/status-go/geth/notifications"
 	"github.com/status-im/status-go/geth/params"
 	shhmetrics "github.com/status-im/status-go/metrics/whisper"
 )
@@ -184,15 +183,6 @@ func activateShhService(stack *node.Node, config *params.NodeConfig) error {
 			var mailServer mailserver.WMailServer
 			whisperService.RegisterServer(&mailServer)
 			mailServer.Init(whisperService, whisperConfig.DataDir, whisperConfig.Password, whisperConfig.MinimumPoW)
-		}
-
-		// enable notification service
-		if whisperConfig.EnablePushNotification {
-			log.Info("Register PushNotification server")
-
-			var notificationServer notifications.NotificationServer
-			whisperService.RegisterNotificationServer(&notificationServer)
-			notificationServer.Init(whisperService, whisperConfig)
 		}
 
 		return whisperService, nil
